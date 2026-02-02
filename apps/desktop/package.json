@@ -1,20 +1,14 @@
 {
   "name": "kaie-desktop",
-  "version": "1.0.0",
-  "description": "KAIE Desktop Application",
   "private": true,
-  "type": "commonjs",
-  "main": "electron/main.js",
+   "description": "KAIE Desktop Application",
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
-    "dev:vite": "vite",
-    "dev:electron": "wait-on http://localhost:5173 && cross-env MODE=development electron .",
-    "build": "npm run build:vite && npm run build:electron",
-    "build:vite": "tsc -b && vite build",
-    "build:electron": "electron-builder",
-    "preview": "vite preview",
-    "lint": "eslint . --ext .ts,.tsx,.js",
-    "format": "prettier --write \"**/*.{ts,tsx,json,md}\""
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@kaie/shared-types": "workspace:*",
@@ -29,23 +23,26 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
-    "@types/electron": "^1.6.12",
-    "@types/node": "^20.11.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.17",
-    "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3",
-    "electron": "^28.2.0",
-    "electron-builder": "^24.9.1",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.0",
-    "wait-on": "^7.2.0"
+     "autoprefixer": "^10.4.17",
+       "postcss": "^8.4.35",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.6",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
+    "vite-plugin-electron": "^0.28.6",
+    "vite-plugin-electron-renderer": "^0.14.5",
+     "tailwindcss": "^3.4.1"
   },
-  "build": {
+  "main": "dist-electron/main.js",
+    "build": {
     "appId": "com.kaie.desktop",
     "productName": "KAIE",
     "directories": {
@@ -67,4 +64,3 @@
     }
   }
 }
-
