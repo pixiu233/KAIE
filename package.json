@@ -1,0 +1,36 @@
+{
+  "name": "kaie-monorepo",
+  "version": "1.0.0",
+  "description": "Electron + React + NestJS 全栈产品架构",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm dev:api\" \"pnpm dev:desktop\"",
+    "dev:api": "cd apps/api && pnpm run start:dev",
+    "dev:desktop": "cd apps/desktop && pnpm run dev",
+    "build": "pnpm build:api && pnpm build:desktop",
+    "build:api": "cd apps/api && pnpm run build",
+    "build:desktop": "cd apps/desktop && pnpm run build",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "db:generate": "cd apps/api && pnpm run prisma:generate",
+    "db:migrate": "cd apps/api && pnpm run prisma:migrate"
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "nestjs",
+    "fullstack",
+    "monorepo"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "concurrently": "^8.2.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.10.0"
+  }
+}

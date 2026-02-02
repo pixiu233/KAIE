@@ -1,0 +1,31 @@
+{
+  "name": "@kaie/config",
+  "version": "1.0.0",
+  "description": "共享 ESLint / TypeScript / Prettier 配置",
+  "main": "index.js",
+  "exports": {
+    "./eslint": "./eslint/index.js",
+    "./typescript": "./typescript/base.json",
+    "./prettier": "./prettier.config.js"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "config",
+    "eslint",
+    "typescript",
+    "prettier"
+  ],
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.3.0"
+  }
+}
+

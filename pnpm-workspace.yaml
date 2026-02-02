@@ -1,0 +1,16 @@
+# Monorepo 根目录配置
+
+node-linker: hoisted
+
+packages:
+  - apps/*
+  - packages/*
+
+catalog:
+  typescript: ^5.3.0
+  eslint: ^8.56.0
+  prettier: ^3.2.0
+
+deny-non-hoist-patterns:
+  - "*"
+
