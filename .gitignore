@@ -34,4 +34,6 @@ pnpm-lock.yaml
 
 # Generated files
 *.tsbuildinfo
+./Trash
+~/.Trash
 

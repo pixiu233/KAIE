@@ -1,12 +1,18 @@
 {
   "compilerOptions": {
     "target": "ES2022",
+    "composite": true,
     "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
@@ -17,11 +23,17 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@kaie/shared-types": ["../../packages/shared-types/src"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@kaie/shared-types": [
+        "../../packages/shared-types/src"
+      ]
     }
   },
-  "include": ["src", "electron"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "src",
+    "vite.config.ts",
+    "electron/**/*"
+  ],
 }
-
