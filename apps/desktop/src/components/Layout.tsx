@@ -1,28 +1,28 @@
 // ============================================
 // Layout 组件 - 类 ChatGPT/豆包布局
 // ============================================
-import { Outlet, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import {
-  Settings,
-  LogOut,
-  Minimize2,
-  Maximize2,
-  X,
-  Sun,
-  Moon,
+  Brain,
   ChevronLeft,
   ChevronRight,
+  Code2,
+  FileText,
+  ImageIcon,
+  LogOut,
+  Maximize2,
   Menu,
   MessageSquare,
-  Plus,
-  Trash2,
-  Code2,
-  ImageIcon,
-  FileText,
+  Minimize2,
+  Moon,
   Music,
-  Brain,
+  Plus,
+  Settings,
+  Sun,
+  Trash2,
+  X,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useThemeStore } from '../stores/themeStore';
 
@@ -119,22 +119,22 @@ export function Layout() {
   // 主题颜色映射
   const themeColors = {
     light: {
-      bg: 'bg-slate-50',
+      bg: 'bg-[#DDE5F7]',
       bgSecondary: 'bg-white',
-      bgTertiary: 'bg-slate-100',
+      bgTertiary: 'bg-primary-50',
       text: 'text-slate-900',
       textSecondary: 'text-slate-600',
       textMuted: 'text-slate-400',
-      border: 'border-slate-200',
-      hover: 'hover:bg-slate-100',
-      hoverSecondary: 'hover:bg-slate-50',
-      active: 'bg-primary-500/10 text-primary-600',
-      inactive: 'text-slate-500 hover:bg-slate-100 hover:text-slate-700',
-      headerBg: 'bg-white border-slate-200',
-      inputBg: 'bg-white border-slate-200',
-      userBubble: 'bg-slate-200 text-slate-900',
-      assistantBubble: 'bg-white border border-slate-200 text-slate-800',
-      sidebarBg: 'bg-slate-100',
+      border: 'border-primary-200',
+      hover: 'hover:bg-primary-100',
+      hoverSecondary: 'hover:bg-primary-50',
+      active: 'bg-primary-100 text-primary-700',
+      inactive: 'text-slate-500 hover:bg-primary-100 hover:text-primary-700',
+      headerBg: 'bg-white border-primary-200',
+      inputBg: 'bg-white border-primary-200',
+      userBubble: 'bg-primary-100 text-slate-900',
+      assistantBubble: 'bg-white border border-primary-200 text-slate-800',
+      sidebarBg: 'bg-white/80',
     },
     dark: {
       bg: 'bg-[#212121]',

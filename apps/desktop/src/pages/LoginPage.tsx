@@ -2,11 +2,11 @@
 // 登录页面 - src/pages/LoginPage.tsx
 // 乳白色暖色调主题 - 左右布局
 // ============================================
+import { ChevronRight, Loader2, Lock, Mail, Monitor, QrCode, Smartphone, User } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Loader2, QrCode, Monitor, ChevronRight, Smartphone } from 'lucide-react';
-import { useAuthStore } from '../stores/authStore';
 import { handleApiError } from '../api/client';
+import { useAuthStore } from '../stores/authStore';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-cream-100 via-cream-50 to-cream-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-primary-100  p-4 relative">
       {/* 顶部 Logo */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2">
         <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
@@ -101,7 +101,7 @@ export function LoginPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             {/* 左侧：品牌信息 */}
             <div className="hidden lg:block text-center lg:text-left space-y-4">
-              <div className="inline-block p-4 bg-white/60 rounded-2xl backdrop-blur-sm shadow-sm">
+              <div className="inline-block p-4 bg-white rounded-xl shadow-sm">
                 <QrCode size={80} className="text-primary-500 mx-auto lg:mx-0" />
               </div>
               <h2 className="text-4xl font-bold text-gray-800">
@@ -111,15 +111,15 @@ export function LoginPage() {
                 统一的 AI 推理服务管理平台，支持多模型接入与智能调度
               </p>
               <div className="flex flex-wrap gap-3 justify-center lg:justify-start mt-6">
-                <span className="px-3 py-1 bg-white/60 rounded-full text-sm text-gray-600 shadow-sm">Electron</span>
-                <span className="px-3 py-1 bg-white/60 rounded-full text-sm text-gray-600 shadow-sm">React</span>
-                <span className="px-3 py-1 bg-white/60 rounded-full text-sm text-gray-600 shadow-sm">NestJS</span>
-                <span className="px-3 py-1 bg-white/60 rounded-full text-sm text-gray-600 shadow-sm">TypeScript</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 shadow-sm">Electron</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 shadow-sm">React</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 shadow-sm">NestJS</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600 shadow-sm">TypeScript</span>
               </div>
             </div>
 
             {/* 右侧：表单卡片 */}
-            <div className="bg-white/80 backdrop-blur-sm border border-cream-200 rounded-3xl p-8 shadow-xl shadow-primary-100/20">
+            <div className="bg-white rounded-2xl p-8 shadow-xl shadow-primary-200/30">
               {/* 移动端显示 Logo */}
               <div className="lg:hidden text-center mb-6">
                 <QrCode size={48} className="text-primary-500 mx-auto mb-3" />
@@ -155,7 +155,7 @@ export function LoginPage() {
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2.5 bg-cream-50 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
+                        className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
                         placeholder="请输入姓名"
                         required={!isLogin}
                       />
@@ -177,7 +177,7 @@ export function LoginPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-2.5 bg-cream-50 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
+                      className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
                       placeholder="user@example.com"
                       required
                     />
@@ -198,7 +198,7 @@ export function LoginPage() {
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-2.5 bg-cream-50 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
+                      className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
                       placeholder="请输入密码"
                       required
                       minLength={6}
@@ -221,7 +221,7 @@ export function LoginPage() {
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2.5 bg-cream-50 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
+                        className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-colors"
                         placeholder="请确认密码"
                         required={!isLogin}
                       />
@@ -275,7 +275,7 @@ export function LoginPage() {
           /* ==================== 扫码登录界面 ==================== */
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             {/* 左侧：扫码区域 */}
-            <div className="bg-white/80 backdrop-blur-sm border border-cream-200 rounded-3xl p-8 shadow-xl shadow-primary-100/20">
+            <div className="bg-white rounded-2xl p-8 shadow-xl shadow-primary-200/30">
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
                   <Smartphone size={32} className="text-primary-500" />
@@ -299,7 +299,7 @@ export function LoginPage() {
 
             {/* 右侧：扫码说明 */}
             <div className="hidden lg:block text-center lg:text-left space-y-6">
-              <div className="inline-block p-4 bg-white/60 rounded-2xl backdrop-blur-sm shadow-sm">
+              <div className="inline-block p-4 bg-white rounded-xl shadow-sm">
                 <Monitor size={80} className="text-primary-500 mx-auto lg:mx-0" />
               </div>
               <h2 className="text-4xl font-bold text-gray-800">

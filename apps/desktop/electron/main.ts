@@ -4,19 +4,18 @@
 import {
   app,
   BrowserWindow,
-  ipcMain,
-  shell,
-  nativeTheme,
-  globalShortcut,
   dialog,
+  globalShortcut,
+  ipcMain,
+  shell
 } from 'electron';
-import path from 'path';
-import fs from 'fs';
 import isDev from 'electron-is-dev';
+import fs from 'fs';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import path from 'path';
 
 let mainWindow: BrowserWindow | null = null;
-import { fileURLToPath } from 'node:url'
-import { dirname } from 'node:path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -26,14 +25,15 @@ function createWindow() {
     height: 800,
     minWidth: 800,
     minHeight: 600,
+    frame: false,   // 关键：关闭系统边框
+    titleBarStyle: 'hidden', // macOS 推荐
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.mjs'),
       spellcheck: false,
     },
     show: false,
-    titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: '#1e293b',
       symbolColor: '#ffffff',
@@ -72,48 +72,32 @@ function createWindow() {
 // IPC 通信接口定义 - Preload 白名单
 // ============================================
 
-// 系统主题
-ipcMain.handle('get-system-theme', async () => {
-  return nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
-});
-
-ipcMain.handle('set-system-theme', (_, theme: 'dark' | 'light') => {
-  nativeTheme.themeSource = theme;
-  return true;
-});
-
-// 窗口控制
-ipcMain.handle('window-minimize', () => {
-  mainWindow?.minimize();
-});
-
-ipcMain.handle('window-maximize', () => {
+// 窗口控制 - send 方式（统一运行时注入）
+ipcMain.on('win:minimize', () => mainWindow?.minimize());
+ipcMain.on('win:maximize', () => {
   if (mainWindow?.isMaximized()) {
     mainWindow.unmaximize();
   } else {
     mainWindow?.maximize();
   }
 });
-
-ipcMain.handle('window-close', () => {
-  mainWindow?.close();
-});
+ipcMain.on('win:close', () => mainWindow?.close());
 
 // 对话框
-ipcMain.handle('show-open-dialog', async (options) => {
+ipcMain.handle('show-open-dialog', async (_event: any, options: Electron.OpenDialogOptions) => {
   return dialog.showOpenDialog(mainWindow!, options);
 });
 
-ipcMain.handle('show-save-dialog', async (options) => {
+ipcMain.handle('show-save-dialog', async (_event: any, options: Electron.SaveDialogOptions) => {
   return dialog.showSaveDialog(mainWindow!, options);
 });
 
-ipcMain.handle('show-message-box', async (options) => {
+ipcMain.handle('show-message-box', async (_event: any, options: Electron.MessageBoxOptions) => {
   return dialog.showMessageBox(mainWindow!, options);
 });
 
 // 文件系统
-ipcMain.handle('read-file', async (filePath: string) => {
+ipcMain.handle('read-file', async (_event: any, filePath: string) => {
   try {
     const content = fs.readFileSync(filePath, 'utf-8');
     return { success: true, content };
@@ -122,7 +106,7 @@ ipcMain.handle('read-file', async (filePath: string) => {
   }
 });
 
-ipcMain.handle('write-file', async (filePath: string, content: string) => {
+ipcMain.handle('write-file', async (_event: any, filePath: string, content: string) => {
   try {
     fs.writeFileSync(filePath, content, 'utf-8');
     return { success: true };

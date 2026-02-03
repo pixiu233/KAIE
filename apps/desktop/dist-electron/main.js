@@ -1,8 +1,8 @@
-import require$$0, { ipcMain, nativeTheme, dialog, app, BrowserWindow, globalShortcut, shell } from "electron";
-import path from "path";
+import require$$0, { ipcMain, dialog, app, BrowserWindow, globalShortcut, shell } from "electron";
 import fs from "fs";
-import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import path from "path";
 function getDefaultExportFromCjs(x) {
   return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
 }
@@ -23,14 +23,17 @@ function createWindow() {
     height: 800,
     minWidth: 800,
     minHeight: 600,
+    frame: false,
+    // 关键：关闭系统边框
+    titleBarStyle: "hidden",
+    // macOS 推荐
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname$1, "preload.js"),
+      preload: path.join(__dirname$1, "preload.mjs"),
       spellcheck: false
     },
     show: false,
-    titleBarStyle: "hidden",
     titleBarOverlay: {
       color: "#1e293b",
       symbolColor: "#ffffff",
@@ -55,36 +58,25 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   }
 }
-ipcMain.handle("get-system-theme", async () => {
-  return nativeTheme.shouldUseDarkColors ? "dark" : "light";
-});
-ipcMain.handle("set-system-theme", (_, theme) => {
-  nativeTheme.themeSource = theme;
-  return true;
-});
-ipcMain.handle("window-minimize", () => {
-  mainWindow == null ? void 0 : mainWindow.minimize();
-});
-ipcMain.handle("window-maximize", () => {
+ipcMain.on("win:minimize", () => mainWindow == null ? void 0 : mainWindow.minimize());
+ipcMain.on("win:maximize", () => {
   if (mainWindow == null ? void 0 : mainWindow.isMaximized()) {
     mainWindow.unmaximize();
   } else {
     mainWindow == null ? void 0 : mainWindow.maximize();
   }
 });
-ipcMain.handle("window-close", () => {
-  mainWindow == null ? void 0 : mainWindow.close();
-});
-ipcMain.handle("show-open-dialog", async (options) => {
+ipcMain.on("win:close", () => mainWindow == null ? void 0 : mainWindow.close());
+ipcMain.handle("show-open-dialog", async (_event, options) => {
   return dialog.showOpenDialog(mainWindow, options);
 });
-ipcMain.handle("show-save-dialog", async (options) => {
+ipcMain.handle("show-save-dialog", async (_event, options) => {
   return dialog.showSaveDialog(mainWindow, options);
 });
-ipcMain.handle("show-message-box", async (options) => {
+ipcMain.handle("show-message-box", async (_event, options) => {
   return dialog.showMessageBox(mainWindow, options);
 });
-ipcMain.handle("read-file", async (filePath) => {
+ipcMain.handle("read-file", async (_event, filePath) => {
   try {
     const content = fs.readFileSync(filePath, "utf-8");
     return { success: true, content };
@@ -92,7 +84,7 @@ ipcMain.handle("read-file", async (filePath) => {
     return { success: false, error: error.message };
   }
 });
-ipcMain.handle("write-file", async (filePath, content) => {
+ipcMain.handle("write-file", async (_event, filePath, content) => {
   try {
     fs.writeFileSync(filePath, content, "utf-8");
     return { success: true };

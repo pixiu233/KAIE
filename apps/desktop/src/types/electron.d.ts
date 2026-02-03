@@ -1,8 +1,19 @@
 // ============================================
 // 类型声明 - src/types/electron.d.ts
 // ============================================
+
+// 统一运行时类型
 declare global {
   interface Window {
+    __RUNTIME__?: {
+      platform: 'electron' | 'tauri';
+      version?: string;
+      window?: {
+        minimize(): void;
+        maximize(): void;
+        close(): void;
+      };
+    };
     electronAPI: {
       // 系统主题
       getSystemTheme: () => Promise<'dark' | 'light'>;
@@ -33,4 +44,3 @@ declare global {
 }
 
 export {};
-

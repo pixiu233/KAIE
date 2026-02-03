@@ -1,5 +1,17 @@
 "use strict";
 const electron = require("electron");
+electron.contextBridge.exposeInMainWorld("__RUNTIME__", {
+  platform: "electron",
+  version: process.versions.electron,
+  window: {
+    minimize: () => electron.ipcRenderer.send("win:minimize"),
+    maximize: () => electron.ipcRenderer.send("win:maximize"),
+    close: () => electron.ipcRenderer.send("win:close")
+  }
+});
+window.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("is-desktop");
+});
 electron.contextBridge.exposeInMainWorld("electronAPI", {
   // 系统主题
   getSystemTheme: () => electron.ipcRenderer.invoke("get-system-theme"),

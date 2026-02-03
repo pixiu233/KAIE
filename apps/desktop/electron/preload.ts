@@ -4,9 +4,26 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 // ============================================
-// 安全白名单 API
+// 统一运行时注入 - 支持多平台（web / electron / tauri）
 // ============================================
-// Renderer 只能通过这些 API 访问主进程功能
+contextBridge.exposeInMainWorld('__RUNTIME__', {
+  platform: 'electron',
+  version: process.versions.electron,
+  window: {
+    minimize: () => ipcRenderer.send('win:minimize'),
+    maximize: () => ipcRenderer.send('win:maximize'),
+    close: () => ipcRenderer.send('win:close')
+  }
+})
+
+// DOM 加载完成后添加桌面端标识
+window.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('is-desktop');
+});
+
+// ============================================
+// 安全白名单 API - 完整功能暴露
+// ============================================
 
 contextBridge.exposeInMainWorld('electronAPI', {
   // 系统主题
