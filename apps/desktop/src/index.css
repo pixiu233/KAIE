@@ -92,13 +92,13 @@ body {
 }
 
 /* ========== 主题过渡 ========== */
-*,
+/* *,
 *::before,
 *::after {
   transition-property: background-color, border-color, color;
-  transition-duration: 200ms;
+  transition-duration: 75ms;
   transition-timing-function: ease-in-out;
-}
+} */
 
 /* ========== Markdown 样式 ========== */
 .prose {

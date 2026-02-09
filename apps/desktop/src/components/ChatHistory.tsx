@@ -55,6 +55,14 @@ export function ChatHistory({ collapsed = false, colors }: ChatHistoryProps) {
     // Menu items for dropdown
     const getMenuItems = (chatId: string): MenuProps['items'] => [
         {
+            key: '1',
+            label: (
+                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                    1st menu item
+                </a>
+            ),
+        },
+        {
             key: 'delete',
             label: '删除对话',
             danger: true,
@@ -79,7 +87,7 @@ export function ChatHistory({ collapsed = false, colors }: ChatHistoryProps) {
                 <div
                     key={chat.id}
                     className={`
-                        w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors cursor-pointer group
+                        w-full flex items-center gap-3 px-3 py-2 rounded-lg  cursor-pointer group
                         ${currentChat?.id === chat.id
                             ? colors.active
                             : `${colors.textMuted} ${colors.hover}`
@@ -105,7 +113,6 @@ export function ChatHistory({ collapsed = false, colors }: ChatHistoryProps) {
                             >
                                 <button
                                     onClick={(e) => e.stopPropagation()}
-                                    className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-lg transition-all"
                                 >
                                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
