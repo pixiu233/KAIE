@@ -15,16 +15,18 @@ import {
   Minimize2,
   Moon,
   Music,
-  Plus,
   Settings,
   Sun,
-  Trash2,
   X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
+import { useDialogStore } from '../stores/dialogStore';
 import { useThemeStore } from '../stores/themeStore';
+import { ChatHistory } from './ChatHistory';
+import { NewChatButton } from './NewChatButton';
+import { NewChatDialog } from './NewChatDialog';
 
 // 功能模块类型
 interface FeatureModule {
@@ -44,34 +46,14 @@ const featureModules: FeatureModule[] = [
   { id: 'music', name: '音乐创作', icon: Music, color: 'from-red-500 to-red-600', description: '音乐和音频生成' },
 ];
 
-interface ChatSession {
-  id: string;
-  title: string;
-  messages: Array<{
-    role: 'user' | 'assistant';
-    content: string;
-  }>;
-  createdAt: Date;
-}
-
 export function Layout() {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
   const { resolvedTheme, setTheme, initTheme } = useThemeStore();
+  const { newChatDialogOpen, setNewChatDialogOpen } = useDialogStore();
   const [isMaximizedState, setIsMaximizedState] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [chatSessions, setChatSessions] = useState<ChatSession[]>([
-    {
-      id: '1',
-      title: 'Welcome to KAIE',
-      messages: [
-        { role: 'assistant', content: 'Hello! I\'m KAIE, your AI assistant. How can I help you today?' },
-      ],
-      createdAt: new Date(),
-    },
-  ]);
-  const [currentSessionId, setCurrentSessionId] = useState('1');
   const [activeModule, setActiveModule] = useState('general');
 
   const handleLogout = async () => {
@@ -95,25 +77,6 @@ export function Layout() {
   const toggleTheme = () => {
     const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
-  };
-
-  // 新建对话
-  const createNewChat = () => {
-    const newSession: ChatSession = {
-      id: Date.now().toString(),
-      title: 'New Chat',
-      messages: [
-        { role: 'assistant', content: 'Hello! I\'m KAIE, your AI assistant. How can I help you today?' },
-      ],
-      createdAt: new Date(),
-    };
-    setChatSessions([newSession, ...chatSessions]);
-    setCurrentSessionId(newSession.id);
-  };
-
-  // 更新会话列表
-  const updateSessions = (sessions: ChatSession[]) => {
-    setChatSessions(sessions);
   };
 
   // 主题颜色映射
@@ -197,17 +160,7 @@ export function Layout() {
 
         {/* 新建对话按钮 */}
         <div className="p-3">
-          <button
-            onClick={createNewChat}
-            className={`
-              w-full flex items-center gap-3 px-3 py-3 rounded-lg border transition-colors
-              ${sidebarCollapsed ? 'justify-center' : ''}
-              ${colors.hoverSecondary} border-slate-300 dark:border-slate-600
-            `}
-          >
-            <Plus size={18} />
-            {!sidebarCollapsed && <span className="text-sm font-medium">New Chat</span>}
-          </button>
+          <NewChatButton collapsed={sidebarCollapsed} colors={colors} />
         </div>
 
         {/* 功能模块区域 */}
@@ -241,56 +194,23 @@ export function Layout() {
           </div>
         )}
 
-        {/* 对话历史列表 */}
+        {/* 侧边栏导航 */}
         <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
-          {!sidebarCollapsed && (
-            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 px-3 py-2">
-              Today
-            </p>
-          )}
-          {chatSessions.map((session) => (
-            <div
-              key={session.id}
-              role="button"
-              tabIndex={0}
-              onClick={() => setCurrentSessionId(session.id)}
-              onKeyDown={(e) => e.key === 'Enter' && setCurrentSessionId(session.id)}
-              className={`
-                w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors cursor-pointer
-                ${currentSessionId === session.id
-                  ? colors.active
-                  : `${colors.textMuted} ${colors.hover}`
-                }
-                ${sidebarCollapsed ? 'justify-center' : ''}
-              `}
-              title={session.title}
-            >
-              <MessageSquare size={18} />
-              {!sidebarCollapsed && (
-                <>
-                  <span className="flex-1 truncate text-sm">{session.title}</span>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // 删除逻辑
-                      const newSessions = chatSessions.filter(s => s.id !== session.id);
-                      setChatSessions(newSessions);
-                      // 如果删除的是当前会话，切换到第一个会话
-                      if (session.id === currentSessionId && newSessions.length > 0) {
-                        setCurrentSessionId(newSessions[0].id);
-                      }
-                    }}
-                    onKeyDown={(e) => e.key === 'Enter' && e.stopPropagation()}
-                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded transition-opacity"
-                  >
-                    <Trash2 size={14} />
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
+          {/* AI 对话入口 */}
+          <button
+            onClick={() => navigate('/chat')}
+            className={`
+              w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors cursor-pointer
+              ${colors.textMuted} ${colors.hover}
+              ${sidebarCollapsed ? 'justify-center' : ''}
+            `}
+          >
+            <MessageSquare size={18} />
+            {!sidebarCollapsed && <span className="text-sm font-medium">AI 对话</span>}
+          </button>
+
+          {/* 聊天历史列表 */}
+          <ChatHistory collapsed={sidebarCollapsed} colors={colors} />
         </nav>
 
         {/* 侧边栏底部 */}
@@ -382,17 +302,15 @@ export function Layout() {
         <main className="flex-1 overflow-hidden flex flex-col">
           <Outlet
             context={{
-              chatSessions,
-              currentSessionId,
-              setCurrentSessionId,
-              createNewChat,
-              updateSessions,
               resolvedTheme,
               colors,
             }}
           />
         </main>
       </div>
+
+      {/* 全局新建对话对话框 */}
+      <NewChatDialog open={newChatDialogOpen} onClose={() => setNewChatDialogOpen(false)} />
     </div>
   );
 }

@@ -3,13 +3,14 @@
 // ============================================
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
-import { HealthModule } from './modules/health/health.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { PrismaModule } from './common/modules/prisma.module';
 import { configuration } from './config/configuration';
+import { AuthModule } from './modules/auth/auth.module';
+import { ChatModule } from './modules/chat/chat.module';
+import { HealthModule } from './modules/health/health.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
     imports: [
@@ -40,6 +41,7 @@ import { configuration } from './config/configuration';
         // 功能模块
         AuthModule,
         UsersModule,
+        ChatModule,
         HealthModule,
     ],
     providers: [

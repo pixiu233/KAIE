@@ -8,6 +8,7 @@ import { Layout } from './components/Layout';
 import { DashboardPage } from './pages/DashboardPage';
 import { LoginPage } from './pages/LoginPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { ChatPage } from './pages/ChatPage';
 import { isDesktop } from './platform/runtime';
 import { useAuthStore } from './stores/authStore';
 
@@ -41,6 +42,8 @@ function getRouteConfig() {
     children: [
       { index: true, element: <Navigate to="/dashboard" replace /> },
       { path: 'dashboard', element: <DashboardPage /> },
+      { path: 'chat', element: <ChatPage /> },
+      { path: 'chat/:id', element: <ChatPage /> },
       { path: 'settings', element: <SettingsPage /> },
     ],
   };

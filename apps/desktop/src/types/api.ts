@@ -68,3 +68,58 @@ export interface RefreshTokenRequest {
     refreshToken: string;
 }
 
+// ========== Chat Types ==========
+
+export interface ChatMessage {
+    id: string;
+    chatId: string;
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+    tokens?: number;
+    createdAt: string;
+}
+
+export interface Chat {
+    id: string;
+    title: string;
+    userId: string;
+    model: string;
+    status: string;
+    messages?: ChatMessage[];
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ChatListResponse {
+    chats: Chat[];
+    total: number;
+}
+
+export interface ChatMessagesResponse {
+    messages: ChatMessage[];
+    total: number;
+}
+
+export interface CreateChatRequest {
+    title: string;
+    model?: string;
+}
+
+export interface UpdateChatRequest {
+    title?: string;
+    status?: string;
+}
+
+export interface SendMessageRequest {
+    content: string;
+}
+
+export interface SendMessageResponse {
+    id: string;
+    chatId: string;
+    role: 'assistant';
+    content: string;
+    tokens?: number;
+    createdAt: string;
+}
+

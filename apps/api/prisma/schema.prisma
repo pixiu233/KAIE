@@ -54,3 +54,37 @@ model AuditLog {
   @@map("audit_logs")
 }
 
+// Chat 会话模型
+model Chat {
+  id        String   @id @default(uuid())
+  title     String
+  userId    String
+  model     String   @default("gpt-3.5-turbo")
+  status    String   @default("active")
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages  ChatMessage[]
+
+  @@index([userId])
+  @@map("chats")
+}
+
+// Chat 消息模型
+model ChatMessage {
+  id        String   @id @default(uuid())
+  chatId    String
+  role      String   // "user" | "assistant" | "system"
+  content   String
+  tokens    Int?
+  
+  createdAt DateTime @default(now())
+
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  @@index([chatId])
+  @@index([createdAt])
+  @@map("chat_messages")
+}
+
