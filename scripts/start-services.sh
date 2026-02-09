@@ -70,7 +70,7 @@ else
     export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
     export https_proxy="http://127.0.0.1:7897"
     export http_proxy="http://127.0.0.1:7897"
-    pnpm start:dev > /dev/null 2>&1 &
+    pnpm start:dev &
     API_PID=$!
     echo "✅ 后端 API 已在后台启动 (PID: $API_PID)"
 fi
@@ -87,7 +87,7 @@ else
     # 在后台启动
     export https_proxy="http://127.0.0.1:7897"
     export http_proxy="http://127.0.0.1:7897"
-    pnpm run dev:vite > /dev/null 2>&1 &
+    pnpm run dev:vite &
     FRONTEND_PID=$!
     echo "✅ 前端已在后台启动 (PID: $FRONTEND_PID)"
 fi
